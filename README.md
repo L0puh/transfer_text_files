@@ -1,4 +1,4 @@
-# Transfer text files from one device to another using local net
+# Transfer text files from one device to another using LAN
 ## usage:
 #### unix system:
 using `cmake`

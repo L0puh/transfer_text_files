@@ -13,6 +13,9 @@
 #include <stdio.h> //stderr
 #include <cstring> //memset 
 
+#include <thread>
+#include <mutex>
+
 class Net {
     protected: 
         int sockfd;
@@ -25,18 +28,24 @@ class Net {
     protected:
         void init_hints();
 };
+
 class Server : public Net {
     private:
         int sockfd_client;
         struct sockaddr_in their_addr;
         socklen_t their_addr_size = sizeof(their_addr);
+    private:
+        void handle_client();
     public:
         Server();
         ~Server();
 
 };
-class Client : public Net {
 
+class Client : public Net {
+    public:
+        Client();
+        ~Client();
 };
 
 #endif
