@@ -1,6 +1,8 @@
 #include "../headers/ttf.h"
 #include "../headers/net_info.h"
 #include <cstring>
+#include <netdb.h>
+#include <sys/socket.h>
 
 Net::Net(){
     init_hints();
@@ -8,13 +10,13 @@ Net::Net(){
                     servinfo->ai_socktype, 
                     servinfo->ai_protocol);
     printiferror(sockfd);
-
+    
 }
+
 Net::~Net(){
     close(sockfd);
     exit(1);
 }
-
 void Net::init_hints(){
     memset(&hints, 0, sizeof(this->hints));
     hints.ai_family = AF_INET;
@@ -35,3 +37,6 @@ void Net::printiferror(int res, int type){
         }
     }
 }
+
+
+
