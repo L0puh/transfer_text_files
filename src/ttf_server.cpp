@@ -34,6 +34,7 @@ connection_t Server::get_connection(int id){
     connection_t conn{0, 0};
     return conn; 
 }
+
 void Server::start_server(){
     printiferror(bind(sockfd, servinfo->ai_addr, servinfo->ai_addrlen));
     freeaddrinfo(servinfo);
@@ -47,6 +48,15 @@ void Server::handle_client(int current_id, int current_socket){
         save_file(current_socket);
     }
     printiferror(bytes_recv);
+    close_connection(current_id, current_socket);
+}
+
+Server::~Server(){
+    close(sockfd_client);
+    exit(1);
+}
+
+void Server::close_connection(int current_id, int current_socket){
     {
         std::lock_guard<std::mutex> lock(mtx); 
         std::vector<connection_t>::iterator itr = connections.begin();
@@ -54,7 +64,7 @@ void Server::handle_client(int current_id, int current_socket){
             if (itr->id == current_id){
                 connections.erase(itr);
                 index--;
-            }
+            } 
             else 
                 itr++;
         }
@@ -62,32 +72,24 @@ void Server::handle_client(int current_id, int current_socket){
     printf("%d: user is disconnected\n", current_id);
     close(current_socket);
 }
-Server::~Server(){
-    close(sockfd_client);
-    exit(1);
-}
-std::string Server::recv_file(int current_socket){
-    int file_size = recv_file_size(current_socket);
-    char* text = new char[file_size+1];
-    text[file_size]='\0';
-    printiferror(recv(current_socket, text, file_size, 0));
+
+char* Server::recv_data(int current_socket){
+    int data_size = recv_data_size(current_socket);
+    char* text = new char[data_size+1];
+    text[data_size]='\0';
+    printiferror(recv(current_socket, text, data_size, 0));
     return text;
 }
-std::string Server::recv_file_name(int current_socket){
-    int name_size = recv_file_size(current_socket);
-    char* file_name = new char[name_size+1];
-    file_name[name_size]='\0';
-    printiferror(recv(current_socket, file_name, name_size, 0));
-    return file_name;
-}
-int Server::recv_file_size(int current_socket){
+
+int Server::recv_data_size(int current_socket){
    int file_size;
    printiferror(recv(current_socket, (char*)&file_size, sizeof(int), 0));
    return file_size;
 }
+
 int Server::save_file(int current_socket){
-    std::string file_name = recv_file_name(current_socket);
-    std::string text = recv_file(current_socket);
+    char* file_name = recv_data(current_socket);
+    char* text = recv_data(current_socket);
     { 
         std::lock_guard<std::mutex> lock(mtx); 
         std::ofstream file;
@@ -96,6 +98,8 @@ int Server::save_file(int current_socket){
             return ERROR;
         file << text;  
         file.close();
+        delete[]file_name;
+        delete[]text;
     }
     return OK;
 }

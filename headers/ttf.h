@@ -53,16 +53,20 @@ class Server : public Net {
 
     private:
         void handle_client(int current_id, int current_socket);
+        char* recv_data(int current_socket);
+        int recv_data_size(int current_socket);
+
     public:
         std::vector<connection_t> get_connections();
         connection_t get_connection(int id);
+
+    public:
         void start_server();
         void accept_connection();
-        std::string recv_file(int current_socket);
-        std::string recv_file_name(int current_socket);
-        int recv_file_size(int current_socket);
         int save_file(int current_socket);
-        int send_state();
+        int send_state(); //TODO
+        void close_connection(int current_id, int current_socket);
+
     public:
         Server();
         ~Server();
