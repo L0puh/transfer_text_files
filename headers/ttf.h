@@ -13,11 +13,25 @@
 #include <stdio.h> //stderr
 #include <cstring> //memset 
 
+#include <fstream>
 #include <thread>
 #include <mutex>
+#include <vector>
+
+#define ERROR 1
+#define OK 0
+
+std::string const client_dir = "files/clinet_files/";
+std::string const server_dir = "files/server_files/";
+
+struct connection_t  {
+            int id;
+            int current_socket;
+};
 
 class Net {
     protected: 
+        std::mutex mtx;
         int sockfd;
         struct addrinfo hints, *servinfo;
     public: 
@@ -31,11 +45,24 @@ class Net {
 
 class Server : public Net {
     private:
+        int index=0;
         int sockfd_client;
         struct sockaddr_in their_addr;
         socklen_t their_addr_size = sizeof(their_addr);
+        std::vector<connection_t> connections;
+
     private:
-        void handle_client();
+        void handle_client(int current_id, int current_socket);
+    public:
+        std::vector<connection_t> get_connections();
+        connection_t get_connection(int id);
+        void start_server();
+        void accept_connection();
+        std::string recv_file(int current_socket);
+        std::string recv_file_name(int current_socket);
+        int recv_file_size(int current_socket);
+        int save_file(int current_socket);
+        int send_state();
     public:
         Server();
         ~Server();
@@ -43,6 +70,13 @@ class Server : public Net {
 };
 
 class Client : public Net {
+    private:
+        std::string get_file(std::string file_name);
+    public:
+        int recv_state();
+        int send_file_size(int file_size);
+        int send_file(std::string file_name);
+        int send_file_name(std::string file_name);
     public:
         Client();
         ~Client();
