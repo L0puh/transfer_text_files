@@ -21,7 +21,7 @@
 #define ERROR 1
 #define OK 0
 
-std::string const client_dir = "files/clinet_files/";
+std::string const client_dir = "files/client_files/";
 std::string const server_dir = "files/server_files/";
 
 struct connection_t  {

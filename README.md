@@ -1,36 +1,30 @@
-## TTF
-`Transfer text files` - provides sending text files from one device to another using LAN, which is useful when you want to quickly and clearly receive your file on another computer. Just run the server on one device and the client on the other.
+# TRANSFER TEXT FILES
+<img style = "padding:10px;" src = "media/example.gif" width="77%" align = "left">  
 
-## Usage:
-#### Unix system:
-##### With `cmake`
-1. build project 
+:computer:
+`Transfer text files` - provides sending text files from one device to another using LAN, which is useful when you want to quickly and clearly share your file locally. Just run a server on one device and the client on the other...
+<br>   
+*example.gif - example of getting started*
+<br>
+<br>
+#### Usage (unix system):
+execute the shell script in your terminal for compiling. then use binary files by `./server` and `./client`
 ```sh
-mkdir build 
-cd build 
-cmake ..
-cmake --build .
+bash script.sh
 ```
-2. use `server` on a device where you want recieve a file
-```sh
-./server
-```
-3. and `client` for sending some file
-```sh
-./client
-```
-
-##### With `gcc` v11+ 
-1. Compile a server 
+or you can use `g++`
+1. compile a server 
 ```sh
 g++ src/server.cpp src/ttf_net.cpp src/ttf_server.cpp -o server 
-./server
 ```
-2. Compile a client 
+2. compile a client 
 ```sh 
 g++ src/client.cpp src/ttf_net.cpp src/ttf_client.cpp -o client
-./client
 ```
+> **:exclamation: NB**: all files put in "files/client_files/" folder or change config file for declarate your path. for sending file, just type the filename and file extension (`file.txt`)
+
+## TODO:
+- [ ] add config file
 
 ## in the future:
 - [ ] script for bash 

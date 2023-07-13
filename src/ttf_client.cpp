@@ -44,9 +44,9 @@ int Client::send_file(std::string file_name){
         return ERROR;
     }
 
-    if (send_file_name(file_name) != ERROR && send_file_size(size(text)) != ERROR ) {
-        printiferror(send(sockfd, text.c_str(), size(text), 0));
-        sum_size+=size(text);
+    if (send_file_name(file_name) != ERROR && send_file_size(std::size(text)) != ERROR ) {
+        printiferror(send(sockfd, text.c_str(), std::size(text), 0));
+        sum_size+=std::size(text);
         printf("file %s (%d bytes) was sent\n", file_name.c_str(), sum_size);
         sum_size=0;
     }
