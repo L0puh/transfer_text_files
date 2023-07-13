@@ -32,6 +32,7 @@ struct connection_t  {
 class Net {
     protected: 
         std::mutex mtx;
+        int sum_size=0;
         int sockfd;
         struct addrinfo hints, *servinfo;
     public: 
@@ -64,7 +65,7 @@ class Server : public Net {
         void start_server();
         void accept_connection();
         int save_file(int current_socket);
-        int send_state(); //TODO
+        int send_state(int current_socket, int state); 
         void close_connection(int current_id, int current_socket);
 
     public:

@@ -15,7 +15,9 @@ int Client::recv_state(){
     int state;
     printiferror(recv(sockfd,(char*)&state, sizeof(int), 0));
     if (state == ERROR) {
-        //TODO: handle error
+        printf("error in recieving data, try again\n");
+    } else {
+        printf("the server had recieved data\n");
     }
     return 0;
 }
@@ -25,7 +27,6 @@ std::string Client::get_file(std::string file_name) {
     std::string line, text;
     file.open(client_dir + file_name);
     if (!file.is_open()){
-        printf("there is no '%s' file\n", file_name.c_str());
         return "";
     }
     while(getline(file, line)){
@@ -38,24 +39,29 @@ std::string Client::get_file(std::string file_name) {
 }
 int Client::send_file(std::string file_name){
     std::string text = get_file(file_name);
-    if (text == "")
+    if (text == ""){
+        printf("there is no '%s' file\n", file_name.c_str());
         return ERROR;
+    }
 
     if (send_file_name(file_name) != ERROR && send_file_size(size(text)) != ERROR ) {
         printiferror(send(sockfd, text.c_str(), size(text), 0));
+        sum_size+=size(text);
+        printf("file %s (%d bytes) was sent\n", file_name.c_str(), sum_size);
+        sum_size=0;
     }
     return OK;
 }
 int Client::send_file_size(int file_size){
-    //TODO: handle errors
     printiferror(send(sockfd, (char*)&file_size, sizeof(int), 0));
     return OK;
 }
 int Client::send_file_name(std::string file_name){
-    //TODO: handle errors
     if(send_file_size(size(file_name)) != ERROR) {
+        sum_size += size(file_name);
         printiferror(send(sockfd, file_name.c_str(), size(file_name), 0));
-    }
+    } else 
+        return ERROR;
     return OK;
 }
 

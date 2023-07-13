@@ -64,8 +64,7 @@ void Server::close_connection(int current_id, int current_socket){
             if (itr->id == current_id){
                 connections.erase(itr);
                 index--;
-            } 
-            else 
+            } else 
                 itr++;
         }
     }
@@ -78,6 +77,7 @@ char* Server::recv_data(int current_socket){
     char* text = new char[data_size+1];
     text[data_size]='\0';
     printiferror(recv(current_socket, text, data_size, 0));
+    sum_size +=data_size;
     return text;
 }
 
@@ -96,13 +96,22 @@ int Server::save_file(int current_socket){
         file.open(server_dir + file_name);
         if (!file)
             return ERROR;
-        file << text;  
+        if (text[0] == '\n'){
+            std::string txt = text;
+            file << txt.erase(0, 1);  
+        } else 
+            file << text;
+       
         file.close();
+        printf("recieved file %s - %d bytes \n", file_name, sum_size);
+        sum_size=0;
         delete[]file_name;
         delete[]text;
     }
+    send_state(current_socket, OK);
     return OK;
 }
-int Server::send_state(){
+int Server::send_state(int current_socket, int state){
+    printiferror(send(current_socket, (char*)&state, sizeof(int), 0)); 
     return 0;
 }
