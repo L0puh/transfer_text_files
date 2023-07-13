@@ -1,12 +1,10 @@
-# TRANSFER TEXT FILES
-<img style = "padding:10px;" src = "media/example.gif" width="77%" align = "left">  
+# TRANSFER TEXT FILES :computer:
 
-:computer:
-`Transfer text files` - provides sending text files from one device to another using LAN, which is useful when you want to quickly and clearly share your file locally. Just run a server on one device and the client on the other...
-<br>   
-*example.gif - example of getting started*
-<br>
-<br>
+
+*Transfer text files* - provides sending text files from one device to another using LAN, which is useful when you want to quickly and clearly share your file locally. Just run a server on one device and the client on the other...</p>
+
+> **:exclamation: NB**: all files put in "files/client_files/" folder or change config file for declarate your path. for sending file, just type the filename and file extension (`file.txt`)
+
 #### Usage (unix system):
 execute the shell script in your terminal for compiling. then use binary files by `./server` and `./client`
 ```sh
@@ -21,8 +19,9 @@ g++ src/server.cpp src/ttf_net.cpp src/ttf_server.cpp -o server
 ```sh 
 g++ src/client.cpp src/ttf_net.cpp src/ttf_client.cpp -o client
 ```
-> **:exclamation: NB**: all files put in "files/client_files/" folder or change config file for declarate your path. for sending file, just type the filename and file extension (`file.txt`)
+<img  src = "media/example.gif" style="display:block;margin-left: auto;margin-right: auto;width:30%;">  
 
+> *example.gif - example of getting started*
 ## TODO:
 - [ ] add config file
 
