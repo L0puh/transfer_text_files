@@ -21,10 +21,14 @@ g++ src/server.cpp src/ttf_net.cpp src/ttf_server.cpp -o server
 ```sh 
 g++ src/client.cpp src/ttf_net.cpp src/ttf_client.cpp -o client
 ```
-> **:exclamation: NB**: all files put in "files/client_files/" folder or change config file for declarate your path. for sending file, just type the filename and file extension (`file.txt`)
+> **:exclamation: NB**: all files put in "files/client_files/" and "files/server_files/" folders or check out configuration to declarate your path. for sending a file, just type the filename and file extension (`file.txt`)
 
-## TODO:
-- [ ] add config file
+## configuration:
+set in your `./bashrc` or `./zshrc` a path to files. `$TTF_client` for folder with files to send and `$TTF_server` for path to recieving files on another computer. 
+```bash
+export TTF_client="path/to/your/folder" #send files
+export TTF_server="path/to/your/folder" #recieve files
+```
 
 ## in the future:
 - [ ] script for bash 

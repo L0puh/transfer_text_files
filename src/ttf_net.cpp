@@ -4,7 +4,21 @@
 #include <netdb.h>
 #include <sys/socket.h>
 
+std::string Net::get_config_server(){
+    if (const char* path = std::getenv("TTF_server"))
+        return path;
+    return "files/server_files/";
+}
+
+std::string Net::get_config_client(){
+    if (const char* path = std::getenv("TTF_client"))
+        return path;
+    return "files/client_files/";
+}
 Net::Net(){
+    server_dir = get_config_server();
+    client_dir = get_config_client();
+
     init_hints();
     sockfd = socket(servinfo->ai_family, 
                     servinfo->ai_socktype, 

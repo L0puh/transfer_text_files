@@ -1,6 +1,7 @@
 #ifndef TTF_H
 #define TTF_H
 
+#include <cstdlib>
 #include <netinet/in.h>
 #include <sys/socket.h>
 #include <sys/types.h>
@@ -21,13 +22,11 @@
 #define ERROR 1
 #define OK 0
 
-std::string const client_dir = "files/client_files/";
-std::string const server_dir = "files/server_files/";
-
 struct connection_t  {
             int id;
             int current_socket;
 };
+
 
 class Net {
     protected: 
@@ -35,13 +34,19 @@ class Net {
         int sum_size=0;
         int sockfd;
         struct addrinfo hints, *servinfo;
+
+        std::string server_dir;
+        std::string client_dir;        
+        
+    private:
+        std::string get_config_client();
+        std::string get_config_server();
     public: 
         Net();
         ~Net();
-    public:
-        void printiferror(int res, int type=0);
     protected:
         void init_hints();
+        void printiferror(int res, int type=0);
 };
 
 class Server : public Net {
@@ -56,7 +61,6 @@ class Server : public Net {
         void handle_client(int current_id, int current_socket);
         char* recv_data(int current_socket);
         int recv_data_size(int current_socket);
-
     public:
         std::vector<connection_t> get_connections();
         connection_t get_connection(int id);
