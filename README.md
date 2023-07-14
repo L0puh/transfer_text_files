@@ -1,12 +1,8 @@
-# TRANSFER TEXT FILES
-<img style = "padding:10px;" src = "media/example.gif" width="77%" align = "left">  
+# TRANSFER TEXT FILES :computer:
 
-:computer:
-`Transfer text files` - provides sending text files from one device to another using LAN, which is useful when you want to quickly and clearly share your file locally. Just run a server on one device and the client on the other...
-<br>   
-*example.gif - example of getting started*
-<br>
-<br>
+*Transfer text files* - provides sending text files from one device to another using LAN, which is useful when you want to quickly and clearly share your file locally. Just run a server on one device and the client on the other...</p>
+
+
 #### Usage (unix system):
 execute the shell script in your terminal for compiling. then use binary files by `./server` and `./client`
 ```sh
@@ -29,6 +25,10 @@ set in your `./bashrc` or `./zshrc` a path to files. `$TTF_client` for folder wi
 export TTF_client="path/to/your/folder" #send files
 export TTF_server="path/to/your/folder" #recieve files
 ```
+## example
+<img  src = "media/example.gif" style="display:block;margin-left: auto;margin-right: auto;width:90%;">  
+
+> *example.gif - example of getting started*
 
 ## in the future:
 - [ ] script for bash 
