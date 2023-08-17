@@ -5,6 +5,7 @@
 #include <sys/socket.h>
 
 Server::Server(){
+    init_crc();
 }
 void Server::accept_connection(){
     sockfd_client = accept(sockfd, (sockaddr *)&their_addr, &their_addr_size);
@@ -46,6 +47,7 @@ void Server::handle_client(int current_id, int current_socket){
     int msg_size, bytes_recv;
     while((bytes_recv = recv(current_socket, (char*)&msg_size, sizeof(int), 0)) > 0){
         save_file(current_socket);
+        check_crc(current_socket);
     }
     printiferror(bytes_recv);
     close_connection(current_id, current_socket);

@@ -1,6 +1,7 @@
 #ifndef TTF_H
 #define TTF_H
 
+#include <cstdint>
 #include <cstdlib>
 #include <netinet/in.h>
 #include <sys/socket.h>
@@ -22,28 +23,35 @@
 #define ERROR 1
 #define OK 0
 
+typedef uint8_t crc;
+
 struct connection_t  {
-            int id;
-            int current_socket;
+    int id;
+    int current_socket;
 };
 
 
 class Net {
     protected: 
+        std::vector<crc> table;
         std::mutex mtx;
         int sum_size=0;
         int sockfd;
         struct addrinfo hints, *servinfo;
-
         std::string server_dir;
         std::string client_dir;        
-        
     private:
         std::string get_config_client();
         std::string get_config_server();
     public: 
         Net();
         ~Net();
+    protected:
+        void init_crc();
+        void send_crc(std::string message, int sockfd);
+        crc get_crc(uint8_t msg, uint8_t rem);
+        void check_crc(int sockfd);
+
     protected:
         void init_hints();
         void printiferror(int res, int type=0);

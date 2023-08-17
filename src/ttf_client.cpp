@@ -2,9 +2,11 @@
 #include "../headers/net_info.h"
 
 Client::Client(){
-   printiferror(connect(sockfd, servinfo->ai_addr, servinfo->ai_addrlen));
+   init_crc();
+    printiferror(connect(sockfd, servinfo->ai_addr, servinfo->ai_addrlen));
    int msg = OK;
    send(sockfd, (char*)&msg, sizeof(int), 0);
+
 }
 
 Client::~Client(){
@@ -47,7 +49,8 @@ int Client::send_file(std::string file_name){
     if (send_file_name(file_name) != ERROR && send_file_size(std::size(text)) != ERROR ) {
         printiferror(send(sockfd, text.c_str(), std::size(text), 0));
         sum_size+=std::size(text);
-        printf("file %s (%d bytes) was sent\n", file_name.c_str(), sum_size);
+        send_crc(text, sockfd);
+        printf("file %s (%d bytes) and crc were sent\n", file_name.c_str(), sum_size);
         sum_size=0;
     }
     return OK;
